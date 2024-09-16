@@ -50,7 +50,7 @@ const updateUser = async (req, res) => {
         UPDATE "user"
         SET ${setClauses.join(', ')}
         WHERE id = $${index}
-    RETURNING id, wallet_address, name, isPrivate, image
+    RETURNING id, wallet_address, name, image
   `;
 
     values.push(id);
