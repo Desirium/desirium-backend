@@ -1,7 +1,6 @@
-const { Client } = require('pg');
+const { Pool } = require('pg');
 
-// Create a new client instance
-const client = new Client({
+const pool = new Pool({
     host: 'localhost',
     database: 'desirium',
     user: 'postgres',
@@ -9,6 +8,4 @@ const client = new Client({
     port: 5432,
 });
 
-client.connect()
-    .then(() => console.log('Connected to PostgreSQL database!'))
-    .catch(err => console.error('Connection error', err.stack));
+module.exports = pool;
