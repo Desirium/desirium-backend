@@ -1,0 +1,30 @@
+databaseType = "PostgreSql"
+id = "be00193e-5712-4705-815d-a8e234705b78"
+name = "desirium-backend"
+
+[environments.development]
+displayName = "Development database"
+password = "postgres"
+url = "jdbc:postgresql://localhost:5432/desirium"
+user = "postgres"
+
+[flyway]
+environment = "development"
+locations = [ "filesystem:config/db/migration" ]
+mixed = true
+outOfOrder = true
+schemaModelLocation = "schema-model"
+validateMigrationNaming = true
+
+[flyway.check]
+majorTolerance = 0
+
+[flywayDesktop]
+developmentEnvironment = "development"
+shadowEnvironment = "shadow"
+
+[redgateCompare]
+filterFile = "filter.rgf"
+
+[redgateCompare.postgresql.options.ignores]
+ignoreNewlinesInTextObjects = "off"

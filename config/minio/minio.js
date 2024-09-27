@@ -7,7 +7,7 @@ const minioClient = new Minio.Client({
     port: Number(process.env.MINIO_PORT),
     useSSL: false,
     accessKey: process.env.MINIO_ACCESS_KEY,
-    accessKey: process.env.MINIO_SECRET_KEY,
+    secretKey: process.env.MINIO_SECRET_KEY,
 });
 
 const uploadMulter = multer({ storage: multer.memoryStorage() });

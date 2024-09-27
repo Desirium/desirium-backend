@@ -28,12 +28,15 @@ const updateUser = async (req, res) => {
     const {name} = req.body;
     const file = req.file;
 
-    if (!file || !name) {
-        return res.status(400);
+    let imageUrl;
+    try {
+        const uploadedFile = await minio.uploadFile(file);
+        imageUrl = await minio.getFileUrl(uploadedFile.etag);
+    } catch (err) {
+        console.error("Error while uploading image:", err);
+        res.status(500).json({error: 'Internal server error'});
+        return
     }
-
-    const uploadedFile = await minio.uploadFile(file);
-    const imageUrl = await minio.getFileUrl(uploadedFile.etag);
 
     // Build the SET clause of the SQL query based on provided fields
     const setClauses = [];
@@ -44,7 +47,8 @@ const updateUser = async (req, res) => {
         setClauses.push(`name = $${index++}`);
         values.push(name);
     }
-    if (image !== undefined) {
+
+    if (imageUrl !== undefined) {
         setClauses.push(`image = $${index++}`);
         values.push(imageUrl);
     }
@@ -79,14 +83,5 @@ const updateUser = async (req, res) => {
     }
 };
 
-const uploadFile = async (req, res) => {
-    const file = req.file;
-
-    const uploadedFile = await minio.uploadFile(file);
-    const url = await minio.getFileUrl(uploadedFile.etag);
-    console.log(url)
-    res.json({url});
-}
-
-module.exports = {createUser, updateUser, uploadFile};
+module.exports = {createUser, updateUser};
 

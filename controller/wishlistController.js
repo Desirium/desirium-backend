@@ -1,4 +1,4 @@
-const pool = require('../db/db');
+const pool = require('../config/db/db');
 
 const createWishlist = async (req, res) => {
     const {user_id, wallet_address, image} = req.body;
