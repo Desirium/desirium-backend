@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 require('dotenv').config()
 const minio = require('./config/minio/minio');
@@ -10,6 +11,7 @@ const {createWishlist, updateWishlist, findAllWishlist, findWishlistById, delete
 const app = express();
 const port = 3000;
 
+app.use(cors());
 app.use(bodyParser.json());
 
 app.post('/users', createUser);
