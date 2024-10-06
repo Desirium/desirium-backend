@@ -17,6 +17,7 @@ const createUser = async (req, res) => {
                 id: user.id,
                 wallet_address: user.wallet_address,
                 name: user.name,
+                surname: user.surname,
                 instagram: user.instagram,
                 tiktok: user.tiktok,
                 twitter: user.twitter,
@@ -38,6 +39,7 @@ const createUser = async (req, res) => {
                 id: user.id,
                 wallet_address: user.wallet_address,
                 name: user.name,
+                surname: user.surname,
                 instagram: user.instagram,
                 tiktok: user.tiktok,
                 twitter: user.twitter,
@@ -54,7 +56,7 @@ const createUser = async (req, res) => {
 
 const getUserByWalletAddress = async (wallet_address) => {
     return await pool.query(
-        'SELECT id, wallet_address, name FROM "user" WHERE wallet_address = $1',
+        'SELECT id, wallet_address, name, surname, tiktok, instagram, linkedin, twitter, description, image FROM "user" WHERE wallet_address = $1',
         [wallet_address]
     );
 }
