@@ -63,7 +63,7 @@ const getUserByWalletAddress = async (wallet_address) => {
 
 const updateUser = async (req, res) => {
     const {id} = req.params;
-    const {name} = req.body;
+    const { name, surname, instagram, tiktok, twitter, linkedin, description } = req.body;
     const file = req.file;
 
     let imageUrl;
@@ -85,6 +85,30 @@ const updateUser = async (req, res) => {
         setClauses.push(`name = $${index++}`);
         values.push(name);
     }
+    if (surname !== undefined) {
+        setClauses.push(`surname = $${index++}`);
+        values.push(surname);
+    }
+    if (instagram !== undefined) {
+        setClauses.push(`instagram = $${index++}`);
+        values.push(instagram);
+    }
+    if (tiktok !== undefined) {
+        setClauses.push(`tiktok = $${index++}`);
+        values.push(tiktok);
+    }
+    if (twitter !== undefined) {
+        setClauses.push(`twitter = $${index++}`);
+        values.push(twitter);
+    }
+    if (linkedin !== undefined) {
+        setClauses.push(`linkedin = $${index++}`);
+        values.push(linkedin);
+    }
+    if (description !== undefined) {
+        setClauses.push(`description = $${index++}`);
+        values.push(description);
+    }
 
     if (imageUrl !== undefined) {
         setClauses.push(`image = $${index++}`);
@@ -101,7 +125,7 @@ const updateUser = async (req, res) => {
         UPDATE "user"
         SET ${setClauses.join(', ')}
         WHERE id = $${index}
-    RETURNING id, wallet_address, name, image
+    RETURNING id, wallet_address, name, image, surname, instagram, tiktok, twitter, linkedin, description
   `;
 
     values.push(id);
