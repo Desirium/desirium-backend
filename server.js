@@ -5,7 +5,7 @@ require('dotenv').config()
 const minio = require('./config/minio/minio');
 
 const {createUser, updateUser} = require('./controller/userController');
-const {createWishlist, updateWishlist, findAllWishlist, findWishlistById, deleteWishlist} =
+const {createWishlist, updateWishlist, findAllWishlistByUserId, findAllWishlist, findWishlistById, deleteWishlist} =
     require('./controller/wishlistController');
 
 const app = express();
@@ -19,6 +19,7 @@ app.put('/users/:id', minio.uploadMulter.single('media'), updateUser);
 
 app.post('/wishlist', createWishlist);
 app.put('/wishlist/:id', updateWishlist);
+app.get('/wishlist/user/:userId', findAllWishlistByUserId);
 app.get('/wishlist', findAllWishlist);
 app.get('/wishlist/:id', findWishlistById);
 app.delete('/wishlist/:id', deleteWishlist);

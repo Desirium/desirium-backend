@@ -31,6 +31,18 @@ const findAllWishlist = async (req, res) => {
     }
 };
 
+const findAllWishlistByUserId = async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const result = await pool.query('SELECT * FROM wishlist WHERE user_id = $1', [userId]);
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Error retrieving wishlist items for user:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 const findWishlistById = async (req, res) => {
     const {id} = req.params;
 
@@ -119,6 +131,7 @@ const updateWishlist = async (req, res) => {
 module.exports = {
     createWishlist,
     updateWishlist,
+    findAllWishlistByUserId,
     findAllWishlist,
     findWishlistById,
     deleteWishlist
