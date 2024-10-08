@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config()
 const minio = require('./config/minio/minio');
 
-const {createUser, updateUser} = require('./controller/userController');
+const {createUser, updateUser, updateUserImage} = require('./controller/userController');
 const {createWishlist, updateWishlist, findAllWishlistByUserId, findAllWishlist, findWishlistById, deleteWishlist} =
     require('./controller/wishlistController');
 
@@ -15,7 +15,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.post('/users', createUser);
-app.put('/users/:id', minio.uploadMulter.single('media'), updateUser);
+app.put('/users/image/:id', minio.uploadMulter.single('media'), updateUserImage);
+app.put('/users/:id', updateUser);
 
 app.post('/wishlist', createWishlist);
 app.put('/wishlist/:id', updateWishlist);

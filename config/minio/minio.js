@@ -12,7 +12,7 @@ const minioClient = new Minio.Client({
 
 const uploadMulter = multer({ storage: multer.memoryStorage() });
 
-const bucket = 'media';
+const bucket = 'desirium';
 minioClient.bucketExists(bucket).then((exists) => {
     if (!exists) {
         minioClient.makeBucket(bucket).then(() => {

@@ -23,7 +23,7 @@ const createUser = async (req, res) => {
                 twitter: user.twitter,
                 linkedin: user.linkedin,
                 description: user.description,
-                avatar: user.image
+                image: user.image
             });
         }
 
@@ -45,7 +45,7 @@ const createUser = async (req, res) => {
                 twitter: user.twitter,
                 linkedin: user.linkedin,
                 description: user.description,
-                avatar: user.image
+                image: user.image
             });
         }
     } catch (error) {
@@ -61,12 +61,11 @@ const getUserByWalletAddress = async (wallet_address) => {
     );
 }
 
-const updateUser = async (req, res) => {
+const updateUserImage = async (req, res) => {
     const {id} = req.params;
-    const { name, surname, instagram, tiktok, twitter, linkedin, description } = req.body;
     const file = req.file;
-
     let imageUrl;
+
     try {
         const uploadedFile = await minio.uploadFile(file);
         imageUrl = await minio.getFileUrl(uploadedFile.etag);
@@ -75,6 +74,24 @@ const updateUser = async (req, res) => {
         res.status(500).json({error: 'Internal server error'});
         return
     }
+
+    const imageUpdate = 'UPDATE "user" SET "image" = $1 WHERE id = $2';
+
+    try {
+        const result = await pool.query(imageUpdate, [imageUrl, id]);
+
+        res.status(200).json({image: imageUrl});
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({error: 'Internal server error'});
+    }
+
+
+}
+
+const updateUser = async (req, res) => {
+    const {id} = req.params;
+    const { name, surname, instagram, tiktok, twitter, linkedin, description } = req.body;
 
     // Build the SET clause of the SQL query based on provided fields
     const setClauses = [];
@@ -145,5 +162,5 @@ const updateUser = async (req, res) => {
     }
 };
 
-module.exports = {createUser, updateUser};
+module.exports = {createUser, updateUser, updateUserImage};
 
