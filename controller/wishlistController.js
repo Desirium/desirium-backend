@@ -4,7 +4,7 @@ const createWishlist = async (req, res) => {
     const {user_id, wallet_address, image} = req.body;
 
     if (!wallet_address || !user_id) {
-        return res.status(400).json({error: 'user_id and wallet_address are required'});
+        return res.status(400).json({error: `${user_id} and wallet_address are required`});
     }
 
     try {
