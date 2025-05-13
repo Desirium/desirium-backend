@@ -1,6 +1,8 @@
 const pool = require('../config/db/db');
 const minio = require('../config/minio/minio');
 
+const bucketName = 'desirium';
+
 const createUser = async (req, res) => {
     const wallet_address = req.body.walletAddress;
 
@@ -65,9 +67,11 @@ const updateUserImage = async (req, res) => {
     const {id} = req.params;
     const file = req.file;
     let imageUrl;
+    console.log(file)
+    const filename = `${id}.${getExtension(file.originalname)}`
 
     try {
-        const uploadedFile = await minio.uploadFile(file);
+        const uploadedFile = await minio.uploadFile(file, filename);
         imageUrl = await minio.getFileUrl(uploadedFile.etag);
     } catch (err) {
         console.error("Error while uploading image:", err);
@@ -161,6 +165,20 @@ const updateUser = async (req, res) => {
         res.status(500).json({error: 'Internal server error'});
     }
 };
+
+function getExtension(filename) {
+    console.log(filename)
+    return filename.split('.').pop();
+}
+
+const loadFileFromMinio = async (filename) => {
+    try {
+        const fileStream = await minio.getFile(bucketName, filename);
+    } catch (err) {
+        console.error("Error while fetching file:", err);
+        return err;
+    }
+}
 
 module.exports = {createUser, updateUser, updateUserImage};
 

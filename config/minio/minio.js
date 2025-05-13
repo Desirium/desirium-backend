@@ -38,4 +38,13 @@ async function getFileUrl(tag) {
     return await minioClient.presignedUrl('GET', bucket, tag);
 }
 
-module.exports = {uploadFile, uploadMulter, getFileUrl}
+async function getFile(bucket, fileName) {
+    try {
+        return await minioClient.getObject(bucket, fileName);
+    } catch (err) {
+        console.error("Error retrieving file:", err);
+        throw new Error('File not found or other error occurred');
+    }
+}
+
+module.exports = {uploadFile, uploadMulter, getFileUrl, getFile}
