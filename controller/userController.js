@@ -63,6 +63,13 @@ const getUserByWalletAddress = async (wallet_address) => {
     );
 }
 
+const getUserById = async (id) => {
+    return await pool.query(
+        'SELECT id, wallet_address, name, surname, tiktok, instagram, linkedin, twitter, description, image FROM "user" WHERE id = $1',
+        [id]
+    );
+};
+
 const updateUserImage = async (req, res) => {
     const {id} = req.params;
     const file = req.file;
@@ -180,5 +187,5 @@ const loadFileFromMinio = async (filename) => {
     }
 }
 
-module.exports = {createUser, updateUser, updateUserImage};
+module.exports = {createUser, updateUser, updateUserImage, getUserById};
 
