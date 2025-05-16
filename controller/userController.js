@@ -63,11 +63,16 @@ const getUserByWalletAddress = async (wallet_address) => {
     );
 }
 
-const getUserById = async (id) => {
-    return await pool.query(
-        'SELECT id, wallet_address, name, surname, tiktok, instagram, linkedin, twitter, description, image FROM "user" WHERE id = $1',
+const getUserById = async (req, res) => {
+    const {id} = req.params;
+    console.error(id);
+    const result = await pool.query(
+        'SELECT id, wallet_address, name, tiktok, instagram, linkedin, twitter, description, image FROM "user" WHERE id = $1',
         [id]
     );
+    const user = result.rows[0];
+    console.error(user);
+    res.status(200).json(user)
 };
 
 const updateUserImage = async (req, res) => {
